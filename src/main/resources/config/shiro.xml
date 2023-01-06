@@ -44,10 +44,13 @@
                 /register = anon
                 /login = anon
                 /userList = roles[管理员]
-                <!--/index=authc-->
-                /index = anon
+                /blackList = roles[管理员]
+                /index=authc
+                /goBackstageIndex = authc
+                <!--/index = anon-->
                 /logout = authc
-                /user/changeUserState = roles[管理员]
+                /user/changeUserState = roles[boss]
+                /welcome = authc
                 <!-- 最后两个，配置静态资源放行、都兰街-->
                 /static/** = anon
                 /** = authc

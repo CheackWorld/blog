@@ -86,6 +86,7 @@
                 userName: "",
                 password: "",
             },
+            //注册用户数据
             user2:{
                 userName:"",
                 email:"",
@@ -105,11 +106,11 @@
                         _this.$message(rs.msg);
                         // 延迟
                         setTimeout(function () {
-                            localStorage.setItem("loginUsername", rs.data);
+                            localStorage.setItem("loginUserName", rs.data);
                             if (rs.status == 200)
                                 location.href = '${pageContext.request.contextPath}/index'
-                            // else
-                            //     location.reload()
+                            else
+                                location.reload()
                         },1000)
                     }, error: function () {
                         _this.$message("登录服务器错误");
@@ -127,14 +128,10 @@
                     success: function (rs) {
                         _this.$message(rs.msg);
                         setTimeout(function () {
-
                                 if (rs.status == 200)
                                     location.href = '${pageContext.request.contextPath}/index';
-                                    // location.reload();
                                 else
                                     location.reload()
-
-
                         },1000)
                     }, error:function () {
                         _this.$message("注册错误");

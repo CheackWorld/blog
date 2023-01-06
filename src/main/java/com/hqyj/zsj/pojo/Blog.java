@@ -7,9 +7,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Article {
+public class Blog {
     private Integer blogId;
-    private String blogName;
+    private String blogTitle;
     private String blogTime;
     private String blogContent;
     private String blogType;

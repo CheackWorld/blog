@@ -17,18 +17,7 @@
             <result property="roleName" column="role_name"/>
         </association>
     </resultMap>
-    <!-- 映射Article结果集-->
-    <resultMap id="ArticleMap" type="article">
-        <id column="blog_id" property="blogId"/>
-        <result column="blog_title" property="blogTitle"/>
-        <result column="blog_time" property="blogTime"/>
-        <result column="blog_content" property="blogContent"/>
-        <result column="blog_type" property="blogType"/>
-        <association property="user">
-            <id property="userId" column="user_id"/>
-            <result property="blogAuthor" column="blog_author"/>
-        </association>
-    </resultMap>
+
     <select id="selectUserByUsername" resultMap="UserMap">
         SELECT
             u.`user_id`,
@@ -45,9 +34,29 @@
         WHERE
             u.`username`=#{username} and u.`user_state`=1
     </select>
+    <select id="userList" resultMap="UserMap">
+        select
+         u.`user_id`,
+            u.`headPic`,
+            u.`username`,
+            u.`password`,
+            u.`email`,
+            u.`user_state`,
+            r.`role_id`,
+            r.`role_name`
+        FROM
+            `user` u
+            LEFT JOIN `role` r ON u.`user_role` = r.`role_id`
+        WHERE
+        u.`user_state`=#{userState} and u.`user_role`=3
+        <if test="username!=null and username!=''">
+            and u.`username` like concat('%',#{username},'%')
+        </if>
+    </select>
     <insert id="registerUser">
-        insert into `user`
-        values (#{username},#{password},#{email},1,1)
+        insert into `user`(`user_id`,`username`,`password`,`email`)
+        values (null,#{username},#{password},#{email})
     </insert>
+
 
 </mapper>

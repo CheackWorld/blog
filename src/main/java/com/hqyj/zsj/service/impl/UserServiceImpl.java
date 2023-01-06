@@ -1,8 +1,10 @@
 package com.hqyj.zsj.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.hqyj.zsj.mapper.UserMapper;
+import com.hqyj.zsj.pojo.User;
 import com.hqyj.zsj.service.UserService;
-import com.hqyj.zsj.utils.MD5Util;
 import com.hqyj.zsj.utils.ResultInfo;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -12,6 +14,8 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -45,13 +49,25 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResultInfo register(String username, String email, String password) {
+    public ResultInfo register(User user) {
 
-        Integer result=userMapper.registerUser(username, email, MD5Util.md5(username,password));
-        System.out.println(username+"==="+email+"==="+ MD5Util.md5(username,password));
+        Integer result=userMapper.registerUser(user);
         if (result>0){
             return new ResultInfo(200,"注册成功",null);
         }
         return new ResultInfo(500,"注册失败",null);
     }
+
+    @Override
+    public ResultInfo userList(Integer page, Integer size, String username, Integer userState) {
+        // 开启分页
+        PageHelper.startPage(page,size);
+        // 执行查询
+        List<User> userList =  userMapper.userList(username,userState);
+        // 把userList封装在pageInfo对象中
+        PageInfo<User> userPageInfo = new PageInfo<>(userList);
+        return new ResultInfo(200,"用户列表",userPageInfo);
+    }
+
+
 }
