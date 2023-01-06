@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <!-- 引入spring-mybatis.xml-->
+    <import resource="classpath:config/spring-mybatis.xml"/>
+    <!-- 引入springmvc.xml-->
+    <import resource="classpath:config/springmvc.xml"/>
+    <!-- 引入shiro.xml-->
+    <import resource="classpath:config/shiro.xml"/>
+
+    <!-- 配置声明式事务-->
+    <!-- 配置transactionManager-->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <!-- 指明数据源-->
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    <!-- 1、配置方法增强-->
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <!-- 事务的传播行为：默认是REQUIRED，没有事务，就创建一个，有事务就加入-->
+        <tx:attributes>
+            <!-- name="*"表示通配的意思-->
+            <!-- 如果想要分开配，比如针对于方法以insert开头的，可以insert*-->
+            <tx:method name="*" propagation="REQUIRED"/>
+        </tx:attributes>
+    </tx:advice>
+
+    <!-- 2、配置aop-->
+    <aop:config>
+        <!-- 切入点-->
+        <aop:pointcut id="pointcut" expression="execution(* com.hqyj.zsj.service.impl.*.*(..))"/>
+        <!-- 通知-->
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="pointcut"/>
+    </aop:config>
+
+</beans>

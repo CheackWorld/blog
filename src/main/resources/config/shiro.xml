@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- 配置密码凭证器，也就是指明加密的算法和加密的次数-->
+    <bean id="credentialsMatcher" class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
+        <!-- 加密算法-->
+        <property name="hashAlgorithmName" value="MD5"/>
+        <!-- 加密的次数-->
+        <property name="hashIterations" value="1024"/>
+    </bean>
+    <!-- 1、注册自定义的realm-->
+    <bean id="MyRealm" class="com.hqyj.zsj.shiro.MyRealm">
+        <!-- 引入密码凭证器-->
+        <property name="credentialsMatcher" ref="credentialsMatcher"/>
+    </bean>
+
+    <!-- 2、配置securityManager，shiro的安全管理器-->
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <!-- 注入自己的realm-->
+        <property name="realm" ref="MyRealm"/>
+    </bean>
+
+    <!-- 3、配置过滤链-->
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <!-- 引入安全管理器-->
+        <property name="securityManager" ref="securityManager"/>
+        <!-- 配置过滤链-->
+        <!-- 1、当当前用户没有权限访问某个资源的时候，执行的方法-->
+        <property name="unauthorizedUrl" value="/unauthorized"/>
+        <!-- 2、未登录跳转的页面-->
+        <property name="loginUrl" value="/login"/>
+        <!-- 3、过滤链-->
+        <property name="filterChainDefinitions">
+            <value>
+                <!--
+                    规则：
+                        /user/deleteUserByUsername = roles[角色名]   表示只有角色拥有管理员才可以访问/user/deleteUserByUsername
+                        /user/login = anon  表示没有登录就可以访问
+                        /index = authc  表示登录了才可以访问
+                -->
+                /user/login = anon
+                /register = anon
+                /login = anon
+                /userList = roles[管理员]
+                <!--/index=authc-->
+                /index = anon
+                /logout = authc
+                /user/changeUserState = roles[管理员]
+                <!-- 最后两个，配置静态资源放行、都兰街-->
+                /static/** = anon
+                /** = authc
+            </value>
+        </property>
+    </bean>
+</beans>
