@@ -50,8 +50,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResultInfo register(User user) {
-
-        Integer result=userMapper.registerUser(user);
+        Integer result=userMapper.register(user);
         if (result>0){
             return new ResultInfo(200,"注册成功",null);
         }
@@ -67,6 +66,15 @@ public class UserServiceImpl implements UserService {
         // 把userList封装在pageInfo对象中
         PageInfo<User> userPageInfo = new PageInfo<>(userList);
         return new ResultInfo(200,"用户列表",userPageInfo);
+    }
+
+    @Override
+    public ResultInfo changeUserState(Integer userState,String userName ) {
+        Integer result = userMapper.changeUserState(userState, userName);
+        if (result>0){
+            return new ResultInfo(200,"禁用成功",null);
+        }
+        return new ResultInfo(500,"禁用失败",null);
     }
 
 

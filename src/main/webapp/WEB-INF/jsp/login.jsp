@@ -49,13 +49,11 @@
 
         </div>
         <!-- 登录 -->
-        <div class="login-box" >
+        <div class="login-box">
             <h1>login</h1>
             <form class="login-box" action="#" method="post">
-
-                <input type="text" v-model="user.userName" placeholder="用户名"/>
-                <input type="password" v-model="user.password" placeholder="密码"/>
-                <%--<input type="button" value="登录" @click="login" id="loginbutton">--%>
+                <input id="username" type="text" v-model="user.userName" placeholder="用户名"/>
+                <input id="password" type="password" v-model="user.password" placeholder="密码"/>
                 <button type="button" @click="login">登录</button>
             </form>
 
@@ -77,7 +75,7 @@
     </div>
 </div>
 
-<script>
+<script type="text/javascript">
     new Vue({
         el: "#loginApp",// 挂载点，即钩子
         data: { // 数据绑定
@@ -87,10 +85,10 @@
                 password: "",
             },
             //注册用户数据
-            user2:{
-                userName:"",
-                email:"",
-                password:"",
+            user2: {
+                userName: "",
+                email: "",
+                password: "",
             }
         },
         methods: { // 定义方法
@@ -108,32 +106,40 @@
                         setTimeout(function () {
                             localStorage.setItem("loginUserName", rs.data);
                             if (rs.status == 200)
-                                location.href = '${pageContext.request.contextPath}/index'
+                                location.href = '${pageContext.request.contextPath}/backstageIndex'
                             else
                                 location.reload()
-                        },1000)
+                        }, 1000)
                     }, error: function () {
                         _this.$message("登录服务器错误");
                     }
                 })
             },
-            register(){
+            register() {
                 var _this = this;
                 var confirmPassword = $("#confirmPassword").value;
                 $.ajax({
-                    url:'${pageContext.request.contextPath}/user/register',
-                    dataType:'json',
-                    type:'get',
-                    data: this.user2,
+                    url: '${pageContext.request.contextPath}/user/register',
+                    dataType: 'json',
+                    type: 'post',
+                    data: JSON.stringify(this.user2),
+                    contentType: 'application/json',
                     success: function (rs) {
                         _this.$message(rs.msg);
+                        alert("123")
                         setTimeout(function () {
-                                if (rs.status == 200)
-                                    location.href = '${pageContext.request.contextPath}/index';
-                                else
-                                    location.reload()
-                        },1000)
-                    }, error:function () {
+                            if (rs.status == 200) {
+                                alert("begin");
+                                location.reload()
+                                <%--location.href = '${pageContext.request.contextPath}/login';--%>
+                                $("#username").innerText = this.user2.userName;
+                                $("#password").innerText = this.user2.password;
+                                alert("end")
+                            }
+                            else
+                                location.reload()
+                        }, 1000)
+                    }, error: function () {
                         _this.$message("注册错误");
                     }
                 })
@@ -141,18 +147,18 @@
 
         },
     })
-    var login=document.getElementById('login');
-    var register=document.getElementById('register');
-    var form_box=document.getElementsByClassName('form-box')[0];
-    var register_box=document.getElementsByClassName('register-box')[0];
-    var login_box=document.getElementsByClassName('login-box')[0];
-    function goregister(){
-        form_box.style.transform='translateX(80%)';
+    var form_box = document.getElementsByClassName('form-box')[0];
+    var register_box = document.getElementsByClassName('register-box')[0];
+    var login_box = document.getElementsByClassName('login-box')[0];
+
+    function goregister() {
+        form_box.style.transform = 'translateX(80%)';
         login_box.classList.add('hidden');
         register_box.classList.remove('hidden');
     }
+
     function gologin() {
-        form_box.style.transform='translateX(0%)';
+        form_box.style.transform = 'translateX(0%)';
         register_box.classList.add('hidden');
         login_box.classList.remove('hidden');
     }

@@ -25,6 +25,12 @@ public class SystemController {
     public String goBackstageIndex(){
         return "backstageIndex";
     }
+    //去后台
+    @GetMapping("/backstageIndex")
+    public String backstageIndex(){
+        return "backstageIndex";
+    }
+
     @GetMapping("/index")
     public String index(){
         return "index";
@@ -48,6 +54,11 @@ public class SystemController {
     @GetMapping("blogList")
     public String blogList(){
         return "blog-list";
+    }
+    //blogBlackList
+    @GetMapping("downBlogList")
+    public String blogBlackList(){
+        return "downBlog-list";
     }
     //blogMessageList
     @GetMapping("blogMessageList")

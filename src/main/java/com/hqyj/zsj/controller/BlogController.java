@@ -15,8 +15,9 @@ public class BlogController {
      * url：http://localhost:8080/article/selectArticleByName
      * */
 
-    @GetMapping("selectAllBlog")
-    public ResultInfo selectAllBlog(Integer page,Integer size,String username){
-        return blogService.selectAllBlog(page, size,username);
+    @GetMapping("blogList")
+    public ResultInfo blogList(Integer page,Integer size,Integer blogState,String blogTitle){
+        return blogService.blogList(page, size,blogTitle,blogState);
     }
+
 }

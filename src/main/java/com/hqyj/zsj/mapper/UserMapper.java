@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface UserMapper {
     User selectUserByUsername(String username);
-    Integer registerUser(User user);
+    Integer register(User user);
     List<User> userList(@Param("username") String username, @Param("userState") Integer userState);
+    Integer changeUserState(@Param("userState") Integer userState, @Param("userName") String userName);
 }

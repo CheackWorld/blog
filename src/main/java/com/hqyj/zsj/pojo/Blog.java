@@ -13,5 +13,6 @@ public class Blog {
     private String blogTime;
     private String blogContent;
     private String blogType;
+    private Integer blogState;
     private User user;
 }

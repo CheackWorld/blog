@@ -12,6 +12,6 @@ public class MD5Util {
         return new SimpleHash("MD5",password,username,1024).toString();
     }
     public static void main(String[] args) {
-        System.out.println(md5("boss","11111"));
+        System.out.println(md5("lisi","123456789"));
     }
 }

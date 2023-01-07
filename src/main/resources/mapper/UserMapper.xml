@@ -48,15 +48,18 @@
             `user` u
             LEFT JOIN `role` r ON u.`user_role` = r.`role_id`
         WHERE
-        u.`user_state`=#{userState} and u.`user_role`=3
+        u.`user_state`=#{userState} and u.`user_role`=2
         <if test="username!=null and username!=''">
-            and u.`username` like concat('%',#{username},'%')
+            and u.`username` like concat('%',#{usename},'%')
         </if>
     </select>
-    <insert id="registerUser">
-        insert into `user`(`user_id`,`username`,`password`,`email`)
+    <insert id="register">
+        insert into `user` (`user_id`,`username`,`password`,`email`)
         values (null,#{username},#{password},#{email})
     </insert>
-
-
+    <update id="changeUserState">
+        update `user`
+        set `user_state`=#{userState}
+        where `username`=#{userName}
+    </update>
 </mapper>

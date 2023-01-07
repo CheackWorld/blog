@@ -41,15 +41,17 @@
                         /index = authc  表示登录了才可以访问
                 -->
                 /user/login = anon
-                /register = anon
+                /user/register = anon
                 /login = anon
                 /userList = roles[管理员]
                 /blackList = roles[管理员]
+                /blogList = roles[管理员]
+                /downBlogList = roles[管理员]
                 /index=authc
                 /goBackstageIndex = authc
                 <!--/index = anon-->
                 /logout = authc
-                /user/changeUserState = roles[boss]
+                /user/changeUserState = roles[管理员]
                 /welcome = authc
                 <!-- 最后两个，配置静态资源放行、都兰街-->
                 /static/** = anon

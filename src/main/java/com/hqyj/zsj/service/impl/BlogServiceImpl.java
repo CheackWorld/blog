@@ -15,12 +15,13 @@ import java.util.List;
 public class BlogServiceImpl implements BlogService {
     @Autowired
     private BlogMapper blogMapper;
+
     @Override
-    public ResultInfo selectAllBlog(Integer page, Integer size,String username) {
+    public ResultInfo blogList(Integer page, Integer size,String blogTitle,Integer blogState) {
         // 开启分页
         PageHelper.startPage(page,size);
         // 执行查询
-        List<Blog> blogList =  blogMapper.selectAllBlog(username);
+        List<Blog> blogList =  blogMapper.blogList(blogState,blogTitle);
         System.out.println(blogList);
         // 把userList封装在pageInfo对象中
         PageInfo<Blog> articlePageInfo = new PageInfo<>(blogList);

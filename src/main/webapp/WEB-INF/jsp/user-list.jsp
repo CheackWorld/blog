@@ -5,7 +5,7 @@
   Time: 17:10
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false"%>
 <html>
 <head>
     <title>用户列表</title>
@@ -22,7 +22,7 @@
     <center>
         <el-form :inline="true" :model="pageData" class="demo-form-inline">
             <el-form-item>
-                <el-input v-model="pageData.username" placeholder="username"></el-input>
+                <el-input v-model="pageData.userName" placeholder="username"></el-input>
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" icon="el-icon-search" circle @click="selectUser"></el-button>
@@ -46,7 +46,7 @@
             </template>
         </el-table-column>
         <el-table-column
-                prop="username"
+                prop="userName"
                 label="用户名"
                 align="center"
                 width="120">
@@ -61,7 +61,7 @@
                 prop="email"
                 label="邮箱"
                 align="center"
-                width="100">
+                width="180">
         </el-table-column>
         <el-table-column
                 label="用户状态"
@@ -74,7 +74,7 @@
                         inactive-color="#13ce66"
                         :active-value="0"
                         :inactive-value="1"
-                        @change="changeUserState(row.userState,row.username)">
+                        @change="changeUserState(row.userState,row.userName)">
                 </el-switch>
             </template>
         </el-table-column>
@@ -96,8 +96,8 @@
                         confirm-button-type="danger"
                         cancel-button-type="Text"
                         :title="title"
-                        @confirm="deleteUserByUsername(scope.row.username)">
-                    <el-button type="danger" slot="reference" icon="el-icon-delete" size="small" @click="setTitle(scope.row.username)"></el-button>
+                        @confirm="deleteUserByUserName(scope.row.userName)">
+                    <el-button type="danger" slot="reference" icon="el-icon-delete" size="small" @click="setTitle(scope.row.userName)"></el-button>
                 </el-popconfirm>
                 <el-button type="primary" icon="el-icon-edit" size="small" @click="goEditUser(scope.row)"></el-button>
             </template>
@@ -125,7 +125,7 @@
     </center>
 </div>
 
-<script>
+<script type="text/javascript">
     new Vue({
         el: '#app',
         data: {
@@ -134,11 +134,11 @@
             pageData: {
                 page: 1, // 当前页码，默认第一页
                 size: 5, // 当前显示条数，默认五条
-                userState: 1, // 当前显示条数，默认五条
-                username: "", // 用户模糊查询用户的
+                userState: 1,
+                userName: "" // 用户模糊查询用户的
             },
             total: 0,
-            title:"",
+            title:""
         },
         methods: {
             loadData() { // 加载用户数据
@@ -170,16 +170,16 @@
                 this.pageData.size = 5;
                 this.loadData();
             },
-            changeUserState(userState,username){ // 改变用户的状态
+            changeUserState(userState,userName){ // 改变用户的状态
                 var _this = this;
-                this.$confirm('此操作将禁用' + username + ',是否继续?', '警告', {
+                this.$confirm('此操作将禁用' + userName + ',是否继续?', '警告', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'error'
                 }).then(()=>{
                     // 发送ajax请求，修改当前用户状态，修改成功之后，刷新页面
                     $.ajax({
-                    url:'${pageContext.request.contextPath}/user/changeUserState/' + userState + '/' +username,
+                    url:'${pageContext.request.contextPath}/user/changeUserState/' + userState + '/' +userName,
                     dataType: 'json',
                     type:'put',
                     success:function (rs) {
@@ -207,15 +207,15 @@
                     message: '已取消禁用'
                 });
                 location.reload(); // 刷新一下
-            });
+            })
             },
-            setTitle(username){ // 设置删除的提示信息
-                this.title = "是否删除" + username + "?";
+            setTitle(userName){ // 设置删除的提示信息
+                this.title = "是否删除" + userName + "?";
             },
-            deleteUserByUsername(username){ // 删除用户
+            deleteUserByUserName(userName){ // 删除用户
                 var _this = this;
                 $.ajax({
-                    url:'${pageContext.request.contextPath}/user/deleteUserByUsername/'+username,
+                    url:'${pageContext.request.contextPath}/user/deleteUserByUsername/'+userName,
                     dataType:'json',
                     type:'delete',
                     success:function (rs) {
@@ -236,7 +236,7 @@
             },
             goUserAdd(){ // 打开行啊
                 x_admin_show('新增用户','${pageContext.request.contextPath}/userAdd',500,400);
-            }
+            },
 
         },
         mounted() {

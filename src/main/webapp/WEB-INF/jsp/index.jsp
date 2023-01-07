@@ -48,39 +48,8 @@
     </div>
     <!--文章列表-->
     <div class="container-right">
-        <div class="blog">
-            <el-table
-                    :data="blogList"
-                    border
-                    style="width: 100%">
+        <div class="tab">
 
-                <div class="title">
-                    <el-table-column
-                            prop="blogTitle"
-                            label="标题"
-                            align="center"
-                            width="120">
-                    </el-table-column></div>
-                <div class="date">
-                    <el-table-column
-                            prop="blogTime"
-                            label="时间"
-                            align="center"
-                            width="310">
-                    </el-table-column>
-                </div>
-                <div class="desc">
-
-                    <el-table-column
-                            prop="blogContent"
-                            label="内容"
-                            align="center"
-                            width="100">
-                    </el-table-column>
-                </div>
-            </el-table>
-
-            <a href="article.html?blogId=1" class="detail">查看全文 &gt; &gt;</a>
             <center>
                 <div class="block">
                     <%-- @size-change：当页面显示的条数发生变化的时候执行的函数，默认传递一个参数过去，参数的值就是当前页码显示的条数
@@ -115,35 +84,36 @@
             pageData: {
                 page: 1, // 当前页码，默认第一页
                 size: 5, // 当前显示条数，默认五条
-                userState: 1, // 当前显示条数，默认五条
-                username: "" // 用户模糊查询用户
+                // userState: 1,
+                blogTitle: "" // 用户模糊查询用户
             },
             total: 0,
             title: ""
         },
         methods: {
-            loadData() {
+            loadData3() {
                 var _this = this;
                 $.ajax({
-                    url: '${pageContext.request.contextPath}/blog/selectAllBlog',
+                    url: '${pageContext.request.contextPath}/blog/blogList',
                     dataType: 'json',
                     type: 'get',
                     data: this.pageData,
                     success: function (rs) {
                         //取得list
-                        _this.blogList = rs.data.list;
-                        _this.total = rs.data.total;
+                        // _this.blogList = rs.data.list;
+                        // _this.total = rs.data.total;
+                        var str="";
                         // var data = rs.data;
-                        // //遍历数组
-                        // for (var x in data) {
-                        //     str +=
-                        //         "<div class='title'>" + data[x].blogTitle + "</div>" +
-                        //         "<div class='date'>" + data[x].blogTime + "</div>" +
-                        //         "<div class='desc'>" + data[x].blogContent + "</div>" +
-                        //         "<a href='article.jsp'>查看全文</a>"
-                        // }
-                        // //将数据
-                        // $("#tab").html(str)
+                        //遍历数组
+                        for (var x in data) {
+                            str +=
+                                "<div class='title'>" + data[x].blogTitle + "</div>" +
+                                "<div class='date'>" + data[x].blogTime + "</div>" +
+                                "<div class='desc'>" + data[x].blogContent + "</div>" +
+                                "<a href='article.jsp' class='detail'>查看全文</a>"
+                        }
+                        //将数据
+                        $("#tab").html(str)
                     }, error: function () {
                         _this.$message("列表出错!!")
                     }
@@ -152,23 +122,26 @@
             handleSizeChange(newSize) { // size改变执行
                 // 把当前改变之后的size，赋值给分页对象中的size，然后重新加载数据
                 this.pageData.size = newSize;
-                this.loadData();
+                this.loadData3();
             },
             handleCurrentChange(newPage) { // page改变执行
                 this.pageData.page = newPage;
-                this.loadData();
+                this.loadData3();
             },
             selectArticle() { // 模糊查询文章
                 this.pageData.page = 1;
                 this.pageData.size = 5;
-                this.loadData();
+                this.loadData3();
             },
         },
         mounted() {
-            this.loadData();
+            this.loadData3();
             $("#loginName").html(localStorage.getItem("loginUserName"));
         }
     })
+
+
+
 </script>
 </body>
 </html>

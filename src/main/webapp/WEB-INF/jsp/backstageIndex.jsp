@@ -47,7 +47,7 @@
                     <li class="layui-nav-item layui-nav-itemed">
                         <a class="" href="javascript:;">用户管理</a>
                         <dl class="layui-nav-child">
-                            <dd><a href="${pageContext.request.contextPath}/user/userList" target="right">用户列表</a></dd>
+                            <dd><a href="${pageContext.request.contextPath}/userList" target="right">用户列表</a></dd>
                         </dl>
                         <dl class="layui-nav-child">
                             <dd><a href="${pageContext.request.contextPath}/blackList" target="right">黑名单</a></dd>
@@ -57,6 +57,9 @@
                         <a class="" href="javascript:;">博客管理</a>
                         <dl class="layui-nav-child">
                             <dd><a href="${pageContext.request.contextPath}/blogList" target="right">博客列表</a></dd>
+                        </dl>
+                        <dl class="layui-nav-child">
+                            <dd><a href="${pageContext.request.contextPath}/downBlogList" target="right">下架博客</a></dd>
                         </dl>
                         <dl class="layui-nav-child">
                             <dd><a href="${pageContext.request.contextPath}/blogMessageList" target="right">博客信息</a></dd>

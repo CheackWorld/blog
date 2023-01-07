@@ -11,24 +11,32 @@
     <result column="blog_time" property="blogTime"/>
     <result column="blog_content" property="blogContent"/>
     <result column="blog_type" property="blogType"/>
+    <result column="blog_state" property="blogState"/>
     <association property="user">
         <id property="userId" column="user_id"/>
         <result property="userName" column="username"/>
     </association>
+
 </resultMap>
-    <select id="selectAllBlog" resultMap="BlogMap">
+    <select id="blogList" resultMap="BlogMap">
          SELECT
             b.`blog_id`,
             b.`blog_title`,
             b.`blog_time`,
             b.`blog_content`,
             b.`blog_type`,
+            b.`blog_state`,
             u.`user_id`,
             u.`username`
+
         FROM
             `blog` b
             LEFT JOIN `user` u ON b.`blog_author` = u.`user_id`
-
+        WHERE
+        b.`blog_state`=#{blogState}
+        <if test="blogTitle!=null and blogTitle!=''">
+            and b.`blogTitle` like concat('%',#{blogTitle},'%')
+        </if>
 
     </select>
 </mapper>

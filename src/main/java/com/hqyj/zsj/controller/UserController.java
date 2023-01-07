@@ -18,18 +18,24 @@ public class UserController {
      * url：http://localhost:8080/user/login
      * */
     @GetMapping("/login")
-    public ResultInfo login(String userName, String password){
-        return userService.login(userName,password);
+    public ResultInfo login(String userName, String password) {
+        return userService.login(userName, password);
     }
+
     @PostMapping("/register")
-    public ResultInfo register(@RequestBody User user){
-        user.setPassword(MD5Util.md5(user.getUserName(),user.getPassword()));
+    public ResultInfo register(@RequestBody User user) {
+        user.setPassword(MD5Util.md5(user.getUserName(), user.getPassword()));
         return userService.register(user);
     }
 
     @GetMapping("/userList")
-    public ResultInfo userList(Integer page,Integer size,String username,Integer userState){
+    public ResultInfo userList(Integer page, Integer size, String username, Integer userState) {
         return userService.userList(page, size, username, userState);
     }
 
+    @PutMapping("/changeUserState/{userState}/{userName}")
+    public ResultInfo changeUserState(@PathVariable("userState") Integer userState,
+                                      @PathVariable("userName") String userName) {
+        return userService.changeUserState(userState,userName);
+    }
 }

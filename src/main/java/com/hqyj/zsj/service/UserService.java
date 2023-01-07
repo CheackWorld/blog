@@ -7,5 +7,6 @@ public interface UserService {
     ResultInfo login(String userName,String password);
     ResultInfo register(User user);
     ResultInfo userList(Integer page, Integer size,String username,Integer userState);
+    ResultInfo changeUserState(Integer userState,String userName);
 
 }
