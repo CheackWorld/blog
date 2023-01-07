@@ -8,5 +8,7 @@ public interface UserService {
     ResultInfo register(User user);
     ResultInfo userList(Integer page, Integer size,String username,Integer userState);
     ResultInfo changeUserState(Integer userState,String userName);
+    ResultInfo deleteUserByUserName(String userName);
+    ResultInfo updateUserByUserName(User user);
 
 }

@@ -103,7 +103,7 @@
         },
         mounted(){
             this.loginUsername = localStorage.getItem("loginUserName");
-            this.url =  localStorage.getItem("loginUserHeadPicture");
+            this.url =  localStorage.getItem("loginUserHeadPic");
         }
     })
 </script>

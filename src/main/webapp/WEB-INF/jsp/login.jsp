@@ -104,9 +104,11 @@
                         _this.$message(rs.msg);
                         // 延迟
                         setTimeout(function () {
-                            localStorage.setItem("loginUserName", rs.data);
+                            localStorage.setItem("loginUserName", _this.user.userName);
+                            localStorage.setItem("loginUserHeadPic",rs.data);
+                            alert(rs.data);
                             if (rs.status == 200)
-                                location.href = '${pageContext.request.contextPath}/backstageIndex'
+                                location.href = '${pageContext.request.contextPath}/backstageIndex';
                             else
                                 location.reload()
                         }, 1000)

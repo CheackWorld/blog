@@ -1,7 +1,9 @@
 package com.hqyj.zsj.controller;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -46,22 +48,22 @@ public class SystemController {
         return "user-list";
     }
     // blackList
-    @GetMapping("blackList")
+    @GetMapping("/blackList")
     public String blackList(){
         return "black-list";
     }
     //blogList
-    @GetMapping("blogList")
+    @GetMapping("/blogList")
     public String blogList(){
         return "blog-list";
     }
     //blogBlackList
-    @GetMapping("downBlogList")
+    @GetMapping("/downBlogList")
     public String blogBlackList(){
         return "downBlog-list";
     }
     //blogMessageList
-    @GetMapping("blogMessageList")
+    @GetMapping("/blogMessageList")
     public String blogMessageList(){
         return "blogMessage-list";
     }
@@ -69,5 +71,10 @@ public class SystemController {
     @GetMapping("/welcome")
     public String welcome(){
         return "welcome";
+    }
+    //userEdit
+    @GetMapping("/userEdit")
+    public String userEdit(){
+        return "user-edit";
     }
 }

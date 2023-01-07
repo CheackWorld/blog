@@ -10,11 +10,13 @@
 <head>
     <title>用户列表</title>
     <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/xadmin.css">
     <script src="${pageContext.request.contextPath}/static/js/jquery-2.1.1.min.js" type="text/javascript"></script>
     <script src="${pageContext.request.contextPath}/static/js/vue.js" type="text/javascript"></script>
     <!-- 引入组件库 -->
     <script src="https://unpkg.com/element-ui/lib/index.js"></script>
     <script src="${pageContext.request.contextPath}/static/lib/layui/layui.js" type="text/javascript"></script>
+    <script src="${pageContext.request.contextPath}/static/js/xadmin.js" type="text/javascript"></script>
 </head>
 <body>
 <div id="app">
@@ -42,7 +44,7 @@
         </el-table-column>
         <el-table-column label="头像" align="center" width="251">
             <template v-slot="{row}">
-                <img :src="row.headPicture" alt="错误" width="180px" height="57px">
+                <img :src="row.headPic" alt="错误" width="100px" height="100px">
             </template>
         </el-table-column>
         <el-table-column
@@ -168,6 +170,7 @@
             selectUser() { // 模糊查询用户
                 this.pageData.page = 1;
                 this.pageData.size = 5;
+                alert(this.pageData.userName);
                 this.loadData();
             },
             changeUserState(userState,userName){ // 改变用户的状态
@@ -215,7 +218,7 @@
             deleteUserByUserName(userName){ // 删除用户
                 var _this = this;
                 $.ajax({
-                    url:'${pageContext.request.contextPath}/user/deleteUserByUsername/'+userName,
+                    url:'${pageContext.request.contextPath}/user/deleteUserByUserName/'+userName,
                     dataType:'json',
                     type:'delete',
                     success:function (rs) {
@@ -227,7 +230,7 @@
                 })
             },
             goEditUser(user){ // 去修改用户的页面
-                delete user.headPicture; // 删除js对象中某个属性
+                delete user.headPic; // 删除js对象中某个属性
                 delete user.userState;
                 delete user.role;
                 delete user.userId;

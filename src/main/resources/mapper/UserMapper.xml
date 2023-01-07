@@ -50,7 +50,7 @@
         WHERE
         u.`user_state`=#{userState} and u.`user_role`=2
         <if test="username!=null and username!=''">
-            and u.`username` like concat('%',#{usename},'%')
+            and u.`username` like concat('%',#{useName},'%')
         </if>
     </select>
     <insert id="register">
@@ -60,6 +60,18 @@
     <update id="changeUserState">
         update `user`
         set `user_state`=#{userState}
+        where `username`=#{userName}
+    </update>
+
+    <!--根据用户名删除用户-->
+    <delete id="deleteUserByUserName">
+        delete from `user` where `username`={#userName}
+    </delete>
+
+    <!--根据用户名修改用户信息-->
+    <update id="updateUserByUserName">
+        update `user`
+        set `password`=#{password},`email`=#{email}
         where `username`=#{userName}
     </update>
 </mapper>

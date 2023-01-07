@@ -47,6 +47,9 @@
                 /blackList = roles[管理员]
                 /blogList = roles[管理员]
                 /downBlogList = roles[管理员]
+                /user/deleteUserByUserName = roles[管理员]
+                /user/updateUserByUserName = roles[管理员]
+                /userEdit = roles[管理员]
                 /index=authc
                 /goBackstageIndex = authc
                 <!--/index = anon-->

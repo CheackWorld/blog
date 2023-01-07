@@ -38,4 +38,14 @@ public class UserController {
                                       @PathVariable("userName") String userName) {
         return userService.changeUserState(userState,userName);
     }
+    @DeleteMapping("/deleteUserByUserName/{userName}")
+    public ResultInfo deleteUserByUserName(@PathVariable("userName") String userName){
+        return userService.deleteUserByUserName(userName);
+    }
+    @PutMapping("/updateUserByUserName")
+    public ResultInfo updateUserByUserName(@RequestBody User user){
+        user.setPassword(MD5Util.md5(user.getUserName(),user.getPassword()));
+        System.out.println(user);
+        return userService.updateUserByUserName(user);
+    }
 }

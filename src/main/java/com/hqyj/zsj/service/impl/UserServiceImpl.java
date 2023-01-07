@@ -30,12 +30,12 @@ public class UserServiceImpl implements UserService {
             // 未登录的情况
             // 通过当前登录用户的账号和密码，创建出来一个token，token中就包含了当前用户登录信息
             AuthenticationToken token = new UsernamePasswordToken(userName, password);
-            System.out.println(userName);
-            System.out.println(password);
             // 把token扔给shiro中的login方法，执行登录，如果账号不存在或者密码不正确都会抛出异常，我们这里通过try catch来捕获处理
             try {
                 subject.login(token);
-                return new ResultInfo(200,"登录成功",userName);
+                User loginUser = (User) subject.getSession().getAttribute("loginUser");
+                String headPic = loginUser.getHeadPic();
+                return new ResultInfo(200,"登录成功",headPic);
             }catch (UnknownAccountException unknownAccountException){ // 用户不存在异常
                 return new ResultInfo(-1,"账户不存在",userName);
             }catch (IncorrectCredentialsException incorrectCredentialsException){ // 密码不正确异常
@@ -45,7 +45,9 @@ public class UserServiceImpl implements UserService {
             }
         }
         // 登录了的情况
-        return new ResultInfo(-4,"当前用户已经登录了",userName);
+        User loginUser = (User) subject.getSession().getAttribute("loginUser");
+        String headPic = loginUser.getHeadPic();
+        return new ResultInfo(-4,"当前用户已经登录了",headPic);
     }
 
     @Override
@@ -77,5 +79,23 @@ public class UserServiceImpl implements UserService {
         return new ResultInfo(500,"禁用失败",null);
     }
 
+    //根据用户名删除用户信息
+    @Override
+    public ResultInfo deleteUserByUserName(String userName) {
+        Integer result = userMapper.deleteUserByUserName(userName);
+        if (result>0){
+            return new ResultInfo(200,"删除成功",null);
+        }
+        return new ResultInfo(500,"删除失败",null);
+    }
 
+    //根据用户名修改用户信息
+    @Override
+    public ResultInfo updateUserByUserName(User user) {
+        Integer result = userMapper.updateUserByUserName(user);
+        if (result>0){
+            return new ResultInfo(200,"修改成功");
+        }
+        return new ResultInfo(500,"修改失败");
+    }
 }

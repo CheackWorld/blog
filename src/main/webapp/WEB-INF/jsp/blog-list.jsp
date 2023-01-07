@@ -52,12 +52,12 @@
                 prop="blogTime"
                 label="发表时间"
                 align="center"
-                width="180">
+                width="230">
         </el-table-column>
         <el-table-column
                 label="内容"
                 align="center"
-                width="180">
+                width="200">
             <template slot-scope="{row}">
                 <el-link :underline="false" href="${pageContext.request.contextPath}/selectByBlogId">查看</el-link>
             </template>
@@ -66,7 +66,7 @@
                 prop="blogType"
                 label="类别"
                 align="center"
-                width="110">
+                width="160">
         </el-table-column>
         <el-table-column
                 label="发表状态"
@@ -163,6 +163,18 @@
                 this.pageData.page = newPage;
                 this.loadData2();
             },
+            changeBlogState(blogState,blogTitle){
+                var _this = this;
+                this.$confirm('此操作将下架'+blogTitle+'，是否继续？','警告'{
+                    confirmButtonText:'确定',
+                        cancelButtonText:'取消',
+                        type:'error'
+                }).then(()=>{
+                    $.ajax({
+
+                })
+                })
+            }
 
         },
         mounted(){
