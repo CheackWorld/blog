@@ -15,10 +15,11 @@ public class User {
     private String email;
     private Integer userState;
     private Role role;
-    public User(String username, String password, String email) {
-        this.userName = username;
+    public User(String userName, String password, String email) {
+        this.userName = userName;
         this.password = password;
         this.email = email;
     }
+
 
 }

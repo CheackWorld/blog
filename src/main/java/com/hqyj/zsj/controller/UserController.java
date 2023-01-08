@@ -45,7 +45,15 @@ public class UserController {
     @PutMapping("/updateUserByUserName")
     public ResultInfo updateUserByUserName(@RequestBody User user){
         user.setPassword(MD5Util.md5(user.getUserName(),user.getPassword()));
-        System.out.println(user);
         return userService.updateUserByUserName(user);
+    }
+    @PostMapping("/addUser")
+    public ResultInfo addUser(@RequestBody User user){
+        user.setPassword(MD5Util.md5(user.getUserName(),user.getPassword()));
+        return userService.addUser(user);
+    }
+    @GetMapping("/checkUserName/{userName}")
+    public ResultInfo checkUserName(@PathVariable("userName")String userName){
+        return userService.checkUserName(userName);
     }
 }

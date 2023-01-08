@@ -34,8 +34,8 @@ public class UserServiceImpl implements UserService {
             try {
                 subject.login(token);
                 User loginUser = (User) subject.getSession().getAttribute("loginUser");
-                String headPic = loginUser.getHeadPic();
-                return new ResultInfo(200,"登录成功",headPic);
+
+                return new ResultInfo(200,"登录成功",loginUser);
             }catch (UnknownAccountException unknownAccountException){ // 用户不存在异常
                 return new ResultInfo(-1,"账户不存在",userName);
             }catch (IncorrectCredentialsException incorrectCredentialsException){ // 密码不正确异常
@@ -98,4 +98,22 @@ public class UserServiceImpl implements UserService {
         }
         return new ResultInfo(500,"修改失败");
     }
+
+    @Override
+    public ResultInfo addUser(User user) {
+        Integer result=userMapper.addUser(user);
+        if (result>0){
+            return new ResultInfo(200,"添加成功",null);
+        }
+        return new ResultInfo(500,"添加失败",null);
+    }
+
+    @Override
+    public ResultInfo checkUserName(String userName) {
+        User user = userMapper.checkUserName(userName);
+        if (user != null)
+            return new ResultInfo(500,"用户存在");
+        return new ResultInfo(200,"用户不存在");
+    }
+
 }

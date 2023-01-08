@@ -10,5 +10,7 @@ public interface UserService {
     ResultInfo changeUserState(Integer userState,String userName);
     ResultInfo deleteUserByUserName(String userName);
     ResultInfo updateUserByUserName(User user);
+    ResultInfo addUser(User user);
+    ResultInfo checkUserName(String userName);
 
 }

@@ -37,6 +37,58 @@
         <if test="blogTitle!=null and blogTitle!=''">
             and b.`blogTitle` like concat('%',#{blogTitle},'%')
         </if>
+    </select>
+    <select id="myBlogList" resultMap="BlogMap">
+        SELECT
+        b.`blog_id`,
+        b.`blog_title`,
+        b.`blog_time`,
+        b.`blog_content`,
+        b.`blog_type`,
+        b.`blog_state`,
+        u.`user_id`,
+        u.`username`
+
+        FROM
+        `blog` b
+        LEFT JOIN `user` u ON b.`blog_author` = u.`user_id`
+        WHERE
+        b.`blog_state`=#{blogState} and b.`blog_author`=(select user_id from `user` where username=#{userName})
 
     </select>
+    <update id="changeBlogState">
+        update `blog`
+        set `blog_state`=#{blogState}
+        where `blog_title`=#{blogTitle}
+        and `blog_author` = (
+                          select `user_id`
+                          from `user`
+                          where `username`= #{userName} )
+    </update>
+    <delete id="deleteBlog">
+        delete from `blog` where `blog_title`=#{blogTitle}
+        and `blog_author`=(
+                          select `user_id`
+                          from `user`
+                          where `username`= #{userName} )
+    </delete>
+    <select id="selectBlogType" resultType="com.hqyj.zsj.pojo.BlogType">
+        select `blog_type`,count(blog_type) as num from `blog` where `blog_state`=1 group by `blog_type`
+    </select>
+    <update id="updateBlog">
+        update `blog`
+        set `blog_title`=#{blogTitle},`blog_type`=#{blogType}
+        where `blog_title`=#{blogTitle}
+        and `blog_author` = (
+                          select `user_id`
+                          from `user`
+                          where `username`= #{userName} )
+    </update>
+    <insert id="addBlog">
+        insert into `blog` (`blog_id`,`blog_title`,`blog_time`,`blog_content`,`blog_type`,`blog_author`)
+        values (null,#{blogTitle},#{blogTime},#{blogContent},#{blogType},(select `user_id` from `user` where `username`=#{userName}))
+    </insert>
+
+
+
 </mapper>

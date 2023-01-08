@@ -19,4 +19,8 @@ public interface UserMapper {
     Integer deleteUserByUserName(String userName);
     //根据用户名修改用户信息
     Integer updateUserByUserName(User user);
+
+    Integer addUser(User user);
+
+    User checkUserName(String userName);
 }

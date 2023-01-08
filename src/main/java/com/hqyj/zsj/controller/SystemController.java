@@ -77,4 +77,20 @@ public class SystemController {
     public String userEdit(){
         return "user-edit";
     }
+    //userAdd
+    @GetMapping("addUser")
+    public String userAdd(){
+        return "user-add";
+    }
+    //blogEdit
+    @GetMapping("/blogEdit")
+    public String blogEdit(){
+        return "blog-edit";
+    }
+
+    @GetMapping("/addBlog")
+    public String addBlog(){return "blog-add";}
+    @GetMapping("/article")
+    public String article(){return "article";}
+
 }

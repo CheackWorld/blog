@@ -15,4 +15,10 @@ public class Blog {
     private String blogType;
     private Integer blogState;
     private User user;
+    public Blog(String blogTitle,String blogTime,String blogContent,String blogType){
+        this.blogTitle = blogTitle;
+        this.blogTime = blogTime;
+        this.blogContent = blogContent;
+        this.blogType = blogType;
+    }
 }

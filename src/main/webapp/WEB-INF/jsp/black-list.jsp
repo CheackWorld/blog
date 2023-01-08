@@ -193,8 +193,30 @@
             setTitle(userName){ // 设置删除的提示信息
                 this.title = "是否删除" + userName + "?";
             },
-            deleteUserByUsername(userName){ // 删除用户
-                console.log(userName)
+            deleteUserByUserName(userName){ // 删除用户
+                var _this = this;
+                $.ajax({
+                    url:'${pageContext.request.contextPath}/user/deleteUserByUserName/'+userName,
+                    dataType:'json',
+                    type:'delete',
+                    success:function (rs) {
+                        _this.$message(rs.msg);
+                        setTimeout(function () {
+                            location.reload();
+                        },1000);
+                    }
+                })
+            },
+            goEditUser(user){ // 去修改用户的页面
+                delete user.headPic; // 删除js对象中某个属性
+                delete user.userState;
+                delete user.role;
+                delete user.userId;
+                localStorage.setItem("updateUser",JSON.stringify(user));
+                x_admin_show('修改用户','${pageContext.request.contextPath}/userEdit',500,400);
+            },
+            goUserAdd(){ // 打开
+                x_admin_show('新增用户','${pageContext.request.contextPath}/addUser',500,400);
             }
         },
         mounted() {

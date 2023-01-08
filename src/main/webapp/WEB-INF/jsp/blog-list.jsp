@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
 <html>
 <head>
-    <title>用户列表</title>
+    <title>博客列表</title>
     <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
     <script src="${pageContext.request.contextPath}/static/js/jquery-2.1.1.min.js" type="text/javascript"></script>
     <script src="${pageContext.request.contextPath}/static/js/vue.js" type="text/javascript"></script>
@@ -24,14 +24,13 @@
     <center>
         <el-form :inline="true" :model="pageData" class="demo-form-inline">
             <el-form-item>
-                <el-input v-model="pageData.blogTitle" placeholder="username"></el-input>
+                <el-input v-model="pageData.blogTitle" placeholder="blogTitle"></el-input>
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" icon="el-icon-search" circle @click="selectBlog"></el-button>
             </el-form-item>
         </el-form>
     </center>
-    <el-button type="primary" @click="goBlogAdd">新增博客</el-button>
     <el-table
             :data="blogList"
             border
@@ -79,9 +78,15 @@
                         inactive-color="#13ce66"
                         :active-value="0"
                         :inactive-value="1"
-                        @change="changeBlogState(row.blogState,row.blogTitle)">
+                        @change="changeBlogState(row.blogState,row.blogTitle,row.user.userName)">
                 </el-switch>
             </template>
+        </el-table-column>
+        <el-table-column
+                prop="user.userName"
+                label="作者"
+                align="center"
+                width="100">
         </el-table-column>
         <el-table-column
                 align="center"
@@ -95,10 +100,9 @@
                         confirm-button-type="danger"
                         cancel-button-type="Text"
                         :title="title"
-                        @confirm="deleteBlogByBlogTitle(scope.row.blogTitle)">
+                        @confirm="deleteBlog(scope.row.blogTitle,scope.row.user.userName)">
                     <el-button type="danger" slot="reference" icon="el-icon-delete" size="small" @click="setTitle(scope.row.blogTitle)"></el-button>
                 </el-popconfirm>
-                <el-button type="primary" icon="el-icon-edit" size="small" @click="goEditBlog(scope.row)"></el-button>
             </template>
         </el-table-column>
     </el-table>
@@ -133,10 +137,11 @@
                 page:1,
                 size:5,
                 blogState:1,
-                blogTitle:""
+                blogTitle:"",
             },
             total:0,
             title:"",
+            userName:""
         },
         methods:{
             loadData2(){
@@ -149,6 +154,8 @@
                     success: function (rs) {
                         _this.blogList = rs.data.list;
                         _this.total = rs.data.total;
+                        _this.userName = rs.user.userName
+
                     }, error: function () {
                         _this.$message("用户列表出错");
                     }
@@ -163,20 +170,63 @@
                 this.pageData.page = newPage;
                 this.loadData2();
             },
-            changeBlogState(blogState,blogTitle){
+            changeBlogState(blogState,blogTitle,userName){
                 var _this = this;
-                this.$confirm('此操作将下架'+blogTitle+'，是否继续？','警告'{
+                this.$confirm('此操作将下架'+blogTitle+'，是否继续？','警告',{
                     confirmButtonText:'确定',
-                        cancelButtonText:'取消',
-                        type:'error'
+                    cancelButtonText:'取消',
+                    type:'error'
                 }).then(()=>{
                     $.ajax({
-
+                    url:'${pageContext.request.contextPath}/blog/changeBlogState/'+blogState+'/'+blogTitle+'/'+userName,
+                    dataType:'json',
+                    type:'put',
+                    success:function (rs) {
+                        if (rs.status==200){
+                            _this.$message({
+                                type:'success',
+                                message:'下架成功!'
+                            });
+                        } else {
+                            _this.$message({
+                                type:'error',
+                                message:'下架失败！'
+                            });
+                        }
+                        setTimeout(function () {
+                            location.reload();
+                        },1000)
+                    },error:function () {
+                        _this.$message("审核服务器错误")
+                    }
                 })
+                }).catch(()=>{
+                    this.$message({
+                    type:'info',
+                    message:'已取消禁用'
+                });
+                    location.reload();
                 })
+            },
+            deleteBlog(blogTitle,userName){ // 删除用户
+                var _this = this;
+                $.ajax({
+                    url:'${pageContext.request.contextPath}/blog/deleteBlog/'+blogTitle+'/'+userName,
+                    dataType:'json',
+                    type:'delete',
+                    success:function (rs) {
+                        _this.$message(rs.msg);
+                        setTimeout(function () {
+                            location.reload();
+                        },1000);
+                    }
+                })
+            },
+            setTitle(blogTitle){
+                this.title = "是否删除"+blogTitle+"?";
             }
-
         },
+
         mounted(){
             this.loadData2();
         }

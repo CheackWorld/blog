@@ -89,7 +89,7 @@
                 userName: "",
                 email: "",
                 password: "",
-            }
+            },
         },
         methods: { // 定义方法
             // 登录方法
@@ -105,10 +105,16 @@
                         // 延迟
                         setTimeout(function () {
                             localStorage.setItem("loginUserName", _this.user.userName);
-                            localStorage.setItem("loginUserHeadPic",rs.data);
-                            alert(rs.data);
+                            localStorage.setItem("loginUserHeadPic",rs.data.headPic);
                             if (rs.status == 200)
-                                location.href = '${pageContext.request.contextPath}/backstageIndex';
+                            {
+                                if (rs.data.role.roleName=="管理员") {
+                                    location.href = '${pageContext.request.contextPath}/backstageIndex';
+                                }else {
+                                    location.href = '${pageContext.request.contextPath}/index';
+                                }
+
+                            }
                             else
                                 location.reload()
                         }, 1000)
@@ -128,15 +134,10 @@
                     contentType: 'application/json',
                     success: function (rs) {
                         _this.$message(rs.msg);
-                        alert("123")
                         setTimeout(function () {
                             if (rs.status == 200) {
-                                alert("begin");
+                                _this.$message("注册成功！");
                                 location.reload()
-                                <%--location.href = '${pageContext.request.contextPath}/login';--%>
-                                $("#username").innerText = this.user2.userName;
-                                $("#password").innerText = this.user2.password;
-                                alert("end")
                             }
                             else
                                 location.reload()

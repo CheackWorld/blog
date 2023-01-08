@@ -55,7 +55,7 @@
     </select>
     <insert id="register">
         insert into `user` (`user_id`,`username`,`password`,`email`)
-        values (null,#{username},#{password},#{email})
+        values (null,#{userName},#{password},#{email})
     </insert>
     <update id="changeUserState">
         update `user`
@@ -65,7 +65,7 @@
 
     <!--根据用户名删除用户-->
     <delete id="deleteUserByUserName">
-        delete from `user` where `username`={#userName}
+        delete from `user` where `username`=#{userName}
     </delete>
 
     <!--根据用户名修改用户信息-->
@@ -74,4 +74,26 @@
         set `password`=#{password},`email`=#{email}
         where `username`=#{userName}
     </update>
+    <!--插入用户-->
+    <insert id="addUser">
+         insert into `user` (`user_id`,`username`,`password`,`email`)
+        values (null,#{userName},#{password},#{email})
+    </insert>
+    <!--表单验证用户名是否存在-->
+    <select id="checkUserName" resultMap="UserMap">
+            SELECT
+            u.`user_id`,
+            u.`headPic`,
+            u.`username`,
+            u.`password`,
+            u.`email`,
+            u.`user_state`,
+            r.`role_id`,
+            r.`role_name`
+        FROM
+            `user` u
+            LEFT JOIN `role` r ON u.`user_role` = r.`role_id`
+        WHERE
+            u.`username`=#{userName}
+    </select>
 </mapper>

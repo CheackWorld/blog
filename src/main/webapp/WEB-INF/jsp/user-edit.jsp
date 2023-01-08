@@ -94,6 +94,7 @@
                 this.user = JSON.parse(localStorage.getItem("updateUser"));
             }
         },
+
         mounted(){
             this.loadUser();
         }
